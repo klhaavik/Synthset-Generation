@@ -1,0 +1,71 @@
+7/3:
+got unet on osc to work on og synthset, couldn't get it to work on anything else
+Problem on others: dice score stagnates
+- maybe this doesn't have to be a problem, try training on other dataset to completion + predicting
+Problem on og synthset: loss values spike insanely high - I think this is because of 
+investigated params, did not seem to be source of problem, however
+- batch size of >1 will crash model when training on og synthset
+- the higher the validation percentage, the higher both epoch loss and dice loss are
+to investigate:
+negative samples affecting dice loss results (tested other loss fncs, didn't work)
+set class size to 1 instead of multiclass (this caused error in the past but maybe can configure it to work)
+cropping negative samples or somehow ignoring/masking them
+
+trying on other datasets
+synthset-2.1: just not enough positive images I think which is really fucking up the dice score
+- try other methods of loss score again bc I was being stupid last time and not refreshing the kernel
+
+todo:
+try it on other datasets again
+
+bugfixes:
+to fix "cannot resize data" issue, resize all images to 256x256
+
+reflection: look for things in imported modules! tracing is hella important
+MAKE SURE YOU KEEP TRACK OF WHAT YOU'RE DOING, UNDERSTAND THE ASSIGNMENT AND DON'T FALL DOWN A RABBIT HOLE
+
+7/7:
+trying to make synthset look more like cbus
+In Blender, for all roads -> add brightness/contrast node between img tex and principled bsdf, set brightness to 0.3
+
+7/10:
+Toronto CityEngine Map Import settings:
+width - 5180
+height - 5000
+first square:
+coordinate system: WGS 1984 - Zone 17N
+BAD x - -8839560, y - 5409280
+REAL: (from lower left to upper right)
+628486, 4832687 : 632172, 4836354
+
+628486.0000,632172.0000,4832687.0000,4836354.0000 [EPSG:32617]
+
+
+
+7/15:
+London CityEngine Map Import settings:
+w: 5000, h: 5000
+WGS 1984
+x: 0, y: 6714000
+
+
+\ttoronto/toronto_real/color/slice_(\d+)_(\d+)_(\d+).png
+
+cbus/train/test/train_(\d+)0.png\tcbus/labels/test/train_1.png
+
+
+7/16:
+QGIS Convert Map To Raster Settings:
+this one works for sure: 
+tile size - 64
+map units per pixel - 3
+
+5kmx5km scene = 64 slices
+10kmx10km = 256 slices
+
+TODO: Get INRIA from shared drive
+
+London coords for the umpteenth time:
+EPSG:32631
+w - 6144, h - 6144
+x - 279621, y - 5711200

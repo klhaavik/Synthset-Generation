@@ -1,0 +1,23 @@
+possible bug fixes for unet stuck validation dice score:
+increase batch size to minimum 8
+n_classes = 1
+"balance the class imbalance"
+try segmentation_models.pytorch
+
+7/7
+hrnet not working on osc:
+tried laptop first, found following:
+dataset config module (cbus.py) may be initializing wrong bc setting parameters from cityscapes that are nonexistent in cbus dataset - "module is not callable" STILL HAVE TO FIX THIS
+"module 'datasets' has no attribute 'cbus'" -> make sure it is included in datasets/__init__.py
+trying to test, following errors:
+"weights should be defined for all or no tensors" -> resize imgs to 256x256
+still doesn't work? make sure num_classes in config matches num_classes in model dataset initialization
+"expected input tensor to be on GPU" -> bn_helper - make it torch.nn.BatchNorm2d instead of syncbatchnorm,
+also delete refs to CUDA or GPU anywhere in all files (and explicitly self.model.to('cpu') for good measure)
+"NoneType has no attribute 'shape'" -> make sure no extra empty lines in .lst files
+"module 'torch.distributed' has no attribute 'is_initialized'" -> remove refs to torch.distributed anywhere in all files (i.e. skip the code) and make everything on cpu
+
+current problems on osc:
+IoU and mIoU stuck at 0.5
+First try to run test anyway and see what I get - 
+

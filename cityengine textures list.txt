@@ -1,0 +1,23 @@
+good residential ground floors:
+t003_005
+t003_008
+t003_009
+t003_010
+t003_011
+t003_012
+t003_013
+t004_003
+t006_026
+t021_000
+
+good residential upper floors:
+f001_t002_000-006
+f002_t002_000
+f002_t002_001
+
+good residential roofs:
+oof
+
+
+good commercial roofs:
+arf
