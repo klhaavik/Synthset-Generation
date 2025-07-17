@@ -14,7 +14,8 @@ clip_end = height + 1000000 # m
 
 #cam_res_w = 3333 # px
 #cam_res_h = 3333 # px
-terrain = bpy.data.objects["terrain.001"]
+terrain_name = "london_terrain_0"
+terrain = bpy.data.objects[terrain_name]
 img_coverage_w = terrain.dimensions[0] # m
 img_coverage_h = terrain.dimensions[2] # m
 
@@ -64,8 +65,10 @@ max_day_of_year = 365
 min_time_of_day = 8.0
 max_time_of_day = 16.0
 
-color_path = "C:\\Users\\bachc\\Documents\\GitHub\\Synthset-Generation\\Blender\\Toronto\\Images\\Color\\"
-sem_seg_path = "C:\\Users\\bachc\\Documents\\GitHub\\Synthset-Generation\\Blender\\Toronto\\Images\\Sem_seg\\"
+city = "London"
+
+color_path = f"C:\\Users\\bachc\\Documents\\GitHub\\Synthset-Generation\\Blender\\{city}\\Images\\Color\\"
+sem_seg_path = f"C:\\Users\\bachc\\Documents\\GitHub\\Synthset-Generation\\Blender\\{city}\\Images\\Sem_seg\\"
 
 ogs = bpy.data.collections["Collection"]
 dupes = bpy.data.collections["Dupes"]
@@ -74,39 +77,43 @@ if bpy.data.objects.find("Clouds") != -1:
     cloud_mat = bpy.data.materials["Clouds.002"]
     cloud_opacity = cloud_mat.node_tree.nodes["Mix Shader.001"].inputs[0]
     cloud_size = cloud_mat.node_tree.nodes["Noise Texture"].inputs[2]
-    using_clouds = true
+    using_clouds = True
 else:
-    using_clouds = false
+    using_clouds = False
 
 min_cloud_size = 4
 max_cloud_size = 14
 max_cloud_opacity = 0.4
 
-if bpy.data.worlds["World"].node_tree.nodes.find("Sky Texture") != -1:
+links = bpy.data.worlds["World"].node_tree.nodes["Background"].inputs["Color"].links
+if links[0] and bpy.data.worlds["World"].node_tree.nodes.find("Sky Texture") != -1:
     using_sky_tex = True
     using_bg = False
     sky_tex = bpy.data.worlds["World"].node_tree.nodes["Sky Texture"]
 elif bpy.data.worlds["World"].node_tree.nodes.find("Background") != -1:
     using_bg = True
     using_sky_tex = False
-    bg = bpy.data.worlds["World"].node_tree.nodes["Background"]
     scene_brightness = bpy.data.worlds["World"].node_tree.nodes["Background"]
+else:
+    using_sky_tex = False
+    using_bg = False
     
-min_scene_brightness = 0.2
-max_scene_brightness = 1
+min_scene_brightness = 0.4
+max_scene_brightness = 2
 
 min_sun_elevation_angle = 23 # degrees
 sun_rotation_deviation = 40 # degrees
 
 for i in range(0, 5):
-    if bpy.context.scene.sun_pos_properties.usage_mode == 'NORMAL':
-        bpy.context.scene.sun_pos_properties.day_of_year = random.randrange(1, 365)
-        bpy.context.scene.sun_pos_properties.time_of_day = random.uniform(8.0, 16.0)
-    elif using_sky_tex:
+    if using_sky_tex:
         sky_tex.sun_rotation = random.uniform(180 - sun_rotation_deviation, 180 + sun_rotation_deviation)
         sky_tex.sun_elevation = random.uniform(min_sun_elevation_angle, 90)
     elif using_bg:
         scene_brightness.default_value = random.uniform(min_scene_brightness, max_scene_brightness)
+    elif bpy.context.scene.sun_pos_properties.usage_mode == 'NORMAL':
+        bpy.context.scene.sun_pos_properties.day_of_year = random.randrange(1, 365)
+        bpy.context.scene.sun_pos_properties.time_of_day = random.uniform(8.0, 16.0)
+
     
 #    cam_pivot.rotation_euler = mathutils.Euler((random.gauss(0, np.deg2rad(5)), random.gauss(0, np.deg2rad(5)), 0), 'XYZ')
     if using_clouds:
