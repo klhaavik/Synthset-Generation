@@ -69,3 +69,14 @@ London coords for the umpteenth time:
 EPSG:32631
 w - 6144, h - 6144
 x - 279621, y - 5711200
+
+
+threshold level: 70 (idk tho just do what looks right)
+
+7/26:
+copypaste from report:
+If OpenStreetMap data has too many gaps, we turn to CityEngine’s built-in synthetic generation capabilities. By drawing a street around the entire terrain and connecting gaps where necessary, we can divide the entire scene into lots and adjust lot generation settings to imitate terrain (using recursive generation=off is usually a good start). 
+
+Blosm could also be worth investigating as a future tool for potentially much less cost than CityEngine. 
+
+Initial experiments with rural areas led to the conclusion that an entirely new method was necessary, perhaps taking inspiration from [something] et al.’s mosaic method.
