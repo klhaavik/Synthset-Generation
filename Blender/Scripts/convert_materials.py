@@ -11,7 +11,7 @@ cam_obj.parent = cam_pivot
 light = bpy.data.objects["Light"].data
 light.type = 'SUN'
 light.energy = 10
-#light.angle = np.deg2rad(0.526)
+light.angle = np.deg2rad(0.526)
 
 bpy.context.scene.sun_pos_properties.sun_object = bpy.data.objects["Light"]
 bpy.context.scene.sun_pos_properties.sun_distance = 60000
